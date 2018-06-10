@@ -1,0 +1,105 @@
+DBMS
+-middleware between the server and database for communications
+
+2 types
+-relational databases 
+    -SQL
+        -allow communication between server and DB's
+    -follow standard format
+    -at least 2 tables, connected to each other 
+    -schema, relation between tables and fields
+    -foreign key, identifies the relation between the tables
+    -primary key, identifies each row in the table 
+-NoSQL, non relational DB
+    -build DB without defining a schema 
+    -if data is unclear or unstructured, this is a better option
+    -greater  flexibility 
+    -document oriented, store data in documents
+    -uses own query language 
+
+==============
+Warning: The post-install step did not complete successfully
+You can try again using `brew postinstall postgresql`
+==> Caveats
+To migrate existing data from a previous major version of PostgreSQL run:
+  brew postgresql-upgrade-database
+
+To have launchd start postgresql now and restart at login:
+  brew services start postgresql
+Or, if you don't want/need a background service you can just run:
+  pg_ctl -D /usr/local/var/postgres start
+
+
+SQL Commands
+============
+SELECT * FROM Customers;
+
+SELECT - extracts data from a database
+UPDATE - updates data in a database
+DELETE - deletes data from a database
+INSERT INTO - inserts new data into a database
+CREATE DATABASE - creates a new database
+ALTER DATABASE - modifies a database
+CREATE TABLE - creates a new table
+ALTER TABLE - modifies a table
+DROP TABLE - deletes a table
+CREATE INDEX - creates an index (search key)
+DROP INDEX - deletes an index
+
+SELECT * FROM users WHERE name LIKE 'A%';
+SELECT * FROM users WHERE name LIKE '%y';
+
+SELECT * FROM users ORDER BY score DESC;
+SELECT * FROM users ORDER BY score ASC;
+
+SELECT AVG(score) FROM users; 
+
+SELECT SUM(age) FROM users; 
+
+SELECT COUNT(name) FROM users;
+
+
+CREATE TABLE login (
+    ID serial NOT NULL PRIMARY KEY,
+    secret VARCHAR(100) NOT NULL,
+    name text UNIQUE NOT NULL
+);
+
+INSERT INTO login (secret, name) VALUES ('abc', 'Andre');
+
+
+SELECT * FROM users JOIN login ON users.name = login.name; 
+
+DELETE FROM users WHERE name='Sally';
+
+DROP TABLE login;
+DROP TABLE users; 
+
+
+
+Smart Brain 
+============
+-user table 
+
+CREATE TABLE users (
+    id serial PRIMARY KEY,
+    name VARCHAR(100),
+    email text UNIQUE NOT NULL, 
+    entries BIGINT DEFAULT 0,
+    joined TIMESTAMP NOT NULL
+);
+
+- password table 
+
+CREATE TABLE login (
+    id serial PRIMARY KEY,
+    hash varchar(100) NOT NULL,
+    email text UNIQUE NOT NULL
+);
+
+======================
+
+localhost = 127.0.0.1 = home 
+
+knex.select('*').from('users');
+
