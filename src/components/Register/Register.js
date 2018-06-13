@@ -1,5 +1,5 @@
 import React from 'react';
-import URL from '../Constants';
+import URL from '../../Constants';
 
 //condense register & signin in to a form component with different input types
 

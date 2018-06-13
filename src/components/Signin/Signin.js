@@ -1,5 +1,5 @@
 import React from 'react';
-import URL from '../Constants';
+import URL from '../../Constants';
 
 class Signin extends React.Component {
     constructor(props){

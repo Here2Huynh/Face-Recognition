@@ -3,7 +3,7 @@ import Rank from '../Rank/Rank';
 import Logo from '../Logo/Logo';
 import ImageLinkForm from '../ImageLinkForm/ImageLinkForm';
 import FaceRecognition from '../FaceRecognition/FaceRecognition';
-import URL from '../Constants';
+import URL from '../../Constants';
 
 class Home extends Component { 
     constructor(user){
