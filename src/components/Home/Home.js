@@ -3,6 +3,7 @@ import Rank from '../Rank/Rank';
 import Logo from '../Logo/Logo';
 import ImageLinkForm from '../ImageLinkForm/ImageLinkForm';
 import FaceRecognition from '../FaceRecognition/FaceRecognition';
+import URL from '../Constants';
 
 class Home extends Component { 
     constructor(user){
@@ -55,7 +56,7 @@ class Home extends Component {
     //then updates the DB is the API returns something 
     onImageSubmit = () => {
     this.setState({imageUrl: this.state.input});
-        fetch('https://still-falls-19006.herokuapp.com/imageurl', {
+        fetch(`${URL}/imageurl`, {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -65,7 +66,7 @@ class Home extends Component {
         .then(response => response.json())
         .then(response => {
         if (response) {
-            fetch('https://still-falls-19006.herokuapp.com/image', {
+            fetch(`${URL}/image`, {
             method: 'put',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({

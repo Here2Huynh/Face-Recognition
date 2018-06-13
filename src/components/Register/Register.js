@@ -1,4 +1,5 @@
 import React from 'react';
+import URL from '../Constants';
 
 //condense register & signin in to a form component with different input types
 
@@ -25,7 +26,7 @@ class Register extends React.Component {
     }
 
     onSubmitSign = () => {
-        fetch('https://still-falls-19006.herokuapp.com/register', {
+        fetch(`${URL}/register`, {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
