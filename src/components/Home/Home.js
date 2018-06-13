@@ -1,16 +1,8 @@
 import React, { Component } from 'react';
-import Clarifai from 'clarifai';
 import Rank from '../Rank/Rank';
 import Logo from '../Logo/Logo';
 import ImageLinkForm from '../ImageLinkForm/ImageLinkForm';
 import FaceRecognition from '../FaceRecognition/FaceRecognition';
-
-//Clarifai configurations
-const app = new Clarifai.App({
-    apiKey: 'c6a9e5031b4b44e78266156a26ac4b49'
-   });
-
-
 
 class Home extends Component { 
     constructor(user){
@@ -63,13 +55,17 @@ class Home extends Component {
     //then updates the DB is the API returns something 
     onImageSubmit = () => {
     this.setState({imageUrl: this.state.input});
-    app.models
-        .predict(
-        Clarifai.FACE_DETECT_MODEL, 
-        this.state.input)
+        fetch('https://still-falls-19006.herokuapp.com/imageurl', {
+            method: 'post',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                input: this.state.input
+            })
+        })
+        .then(response => response.json())
         .then(response => {
         if (response) {
-            fetch('http://localhost:3000/image', {
+            fetch('https://still-falls-19006.herokuapp.com/image', {
             method: 'put',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
