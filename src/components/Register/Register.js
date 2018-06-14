@@ -1,4 +1,5 @@
 import React from 'react';
+import URL from '../../Constants';
 
 //condense register & signin in to a form component with different input types
 
@@ -25,7 +26,7 @@ class Register extends React.Component {
     }
 
     onSubmitSign = () => {
-        fetch('http://localhost:3000/register', {
+        fetch(`${URL}/register`, {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -36,7 +37,7 @@ class Register extends React.Component {
         })
             .then(response => response.json())
             .then(user => {
-                if (user) {
+                if (user.id) {
                     this.props.loadUser(user);
                     this.props.onRouteChange('home');
                 }

@@ -76,3 +76,8 @@ class ComponentsWrapper extends Component {
 }
 
 export default ComponentsWrapper;
+
+// THINGS TO DO:
+// -error message when wrong credentials are entered
+// -submit form with enter is hit 
+//fix empty register form submission
