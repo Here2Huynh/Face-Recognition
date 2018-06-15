@@ -32,9 +32,17 @@ class Signin extends React.Component {
                 if (user.id) {
                     this.props.loadUser(user);
                     this.props.onRouteChange('home');
+                    // this.printVar()
                 }
             })
     }
+
+    // printVar = () => {
+    //     console.log('URL', URL);
+    //     console.log('process.env', process.env)
+    //     console.log('process.env.NODE_ENV', process.env.NODE_ENV)
+    //   }
+    
 
     render() {
         const { onRouteChange } = this.props;
