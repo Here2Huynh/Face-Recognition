@@ -38,11 +38,6 @@ class App extends Component {
     console.log(box);
     this.setState({box: box});
   }
-  printVar = () => {
-    console.log
-  }
-
-
 
 
   render() {

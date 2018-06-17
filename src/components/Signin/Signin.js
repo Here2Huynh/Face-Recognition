@@ -32,16 +32,22 @@ class Signin extends React.Component {
                 if (user.id) {
                     this.props.loadUser(user);
                     this.props.onRouteChange('home');
-                    // this.printVar()
+                    this.printVar()
                 }
             })
     }
 
-    // printVar = () => {
-    //     console.log('URL', URL);
-    //     console.log('process.env', process.env)
-    //     console.log('process.env.NODE_ENV', process.env.NODE_ENV)
-    //   }
+    handleKeyPress = (event) => {
+        if (event.key === "Enter") {
+            this.onSubmitSignIn()
+        }
+    }
+
+    printVar = () => {
+        console.log('URL', URL);
+        console.log('process.env', process.env)
+        console.log('process.env.NODE_ENV', process.env.NODE_ENV)
+      }
     
 
     render() {
@@ -70,6 +76,7 @@ class Signin extends React.Component {
                             name="password"  
                             id="password" 
                             onChange={this.onPasswordChange}
+                            onKeyPress={this.handleKeyPress}
                         />
                     </div>
                     
