@@ -63,7 +63,6 @@ class Signin extends React.Component {
     let re = /\S+@\S+/;        
     return {
             email: re.test(email),
-            // email: email.length === 0,
             password: password.length > 0
         }
     }
@@ -95,17 +94,17 @@ class Signin extends React.Component {
                         <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
                         <input 
                             className={ shouldMarkError('email') 
-                                ? "pa2 input-reset ba bg-transparent hover-bg-black b--red hover-white w-100"
+                                ? "pa2 input-reset ba bg-transparent hover-bg-black b--dark-red hover-white w-100"
                                 : "pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
-                                } 
+                            } 
                             onBlur={this.handleBlur('email')}
                             type="email" 
                             name="email-address"  
                             id="email-address"
                             onChange={this.onEmailChange}
-                            onMouseLeave={console.log(errors.email, this.state.signInEmail.length, errors.password)}
+                            // onMouseLeave={console.log(errors.email, this.state.signInEmail.length, errors.password)}
                         />
-                        <div className={(!errors.email && this.state.signInEmail.length > 5) ? '' : 'hide' }>
+                        <div className={(!errors.email && this.state.signInEmail.length > 7) ? 'error' : 'hide' }>
                             Please enter a valid email address.
                         </div>
                     </div>
@@ -113,7 +112,7 @@ class Signin extends React.Component {
                         <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
                         <input 
                             className={ shouldMarkError('password')
-                                ? "b pa2 input-reset ba bg-transparent hover-bg-black b--red hover-white w-100"
+                                ? "b pa2 input-reset ba bg-transparent hover-bg-black b--dark-red hover-white w-100"
                                 : "b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
                             }
                             onBlur={this.handleBlur('password')}
