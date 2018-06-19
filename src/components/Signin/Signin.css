@@ -1,0 +1,8 @@
+.hide {
+    display: none;
+}
+
+.error {
+    color:  #e7040f;
+    padding-top: 10px;
+}
