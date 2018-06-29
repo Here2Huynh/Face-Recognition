@@ -30,7 +30,7 @@ class Register extends React.Component {
         this.setState({password: event.target.value})
     }
 
-    onSubmitSign = () => {
+    onSubmitRegister = () => {
         fetch(`${URL}/register`, {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
@@ -51,7 +51,7 @@ class Register extends React.Component {
 
     handleKeyPress = (event) => {
         if (event.key === "Enter") {
-            this.onSubmitSign()
+            this.onSubmitRegister()
         }
     }
 
@@ -112,6 +112,9 @@ class Register extends React.Component {
                             id="email-address" 
                             onChange={this.onEmailChange}
                         />
+                        <div className={!errors.email && this.state.email.length > 7 ? 'error' : 'hide'}>
+                            Please enter a valid email address.
+                        </div>
                     </div>
                     <div className="mv3">
                         <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
@@ -131,7 +134,7 @@ class Register extends React.Component {
                     </fieldset>
                     <div className="">
                     <input 
-                        onClick={this.onSubmitSign}
+                        onClick={this.onSubmitRegister}
                         className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" 
                         type="submit" 
                         value="Register" 

@@ -53,7 +53,8 @@ class ComponentsWrapper extends Component {
     (route === 'signout') || (route === 'register') || (route === 'signin')
         ? this.setState(initialState)
         : this.setState({isSignedIn: true})
-
+    
+    console.log(route)
     this.setState({route: route});
     }
 
@@ -61,7 +62,7 @@ class ComponentsWrapper extends Component {
         const { isSignedIn, route, user } = this.state;
         return (
             <div>
-                <Navigation onRouteChange={this.onRouteChange} isSignedIn={isSignedIn} />
+                <Navigation onRouteChange={this.onRouteChange} isSignedIn={isSignedIn} route={route}/>
                 {route === 'home'
                 ? <Home user={user}/>
                 : (

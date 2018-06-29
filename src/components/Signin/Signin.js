@@ -1,6 +1,7 @@
 import React from 'react';
 import URL from '../../Constants';
 import './Signin.css';
+import Popup from "reactjs-popup";
 
 class Signin extends React.Component {
     constructor(props){
@@ -11,14 +12,9 @@ class Signin extends React.Component {
             touched: {
                 email: false,
                 password: false
-            }
+            },
+            wrongCredentials: false
         }
-    }
-
-    handleBlur = (field) => (event) => {
-        this.setState({
-            touched: { ...this.state.touched, [field] : true }
-        })
     }
 
     onEmailChange = (event) => {
@@ -46,7 +42,11 @@ class Signin extends React.Component {
                     this.printVar()
                 }
             })
-            .catch(err => window.alert('You entered the wrong credentials. Please try again.'))
+            .catch(err => {
+                console.log(err)
+                // this.setState({wrongCredentials: true})
+                // console.log('wrong credentials', this.state.wrongCredentials)
+            })
     }
 
     handleKeyPress = (event) => {
@@ -55,10 +55,6 @@ class Signin extends React.Component {
         }
     }
 
-    // /\S+@\S+/.test('dada@gmail.com')
-    // true
-    // /\S+@\S+/.test('dadm')
-    // false
     validate = (email, password) => {
     let re = /\S+@\S+/;        
     return {
@@ -67,10 +63,17 @@ class Signin extends React.Component {
         }
     }
 
+    handleBlur = (field) => (event) => {
+        this.setState({
+            touched: { ...this.state.touched, [field] : true }
+        })
+    }
+    
     printVar = () => {
         console.log('URL', URL);
         console.log('process.env', process.env)
         console.log('process.env.NODE_ENV', process.env.NODE_ENV)
+        console.log('wrong credentials', this.state.wrongCredentials)
       }
     
 
@@ -102,11 +105,18 @@ class Signin extends React.Component {
                             name="email-address"  
                             id="email-address"
                             onChange={this.onEmailChange}
-                            // onMouseLeave={console.log(errors.email, this.state.signInEmail.length, errors.password)}
                         />
+                        <Popup
+                            open={!errors.email && this.state.signInEmail.length > 7}
+                            position="right center"
+                            closeOnDocumentClick
+                        >
+                        <span> Credentials you have enter is incorrect. </span>
+                        </Popup>
                         <div className={(!errors.email && this.state.signInEmail.length > 7) ? 'error' : 'hide' }>
                             Please enter a valid email address.
                         </div>
+
                     </div>
                     <div className="mv3">
                         <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
