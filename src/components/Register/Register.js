@@ -1,7 +1,6 @@
 import React from 'react';
 import URL from '../../Constants';
-
-//condense register & signin in to a form component with different input types
+import Popup from "reactjs-popup";
 
 class Register extends React.Component {
     constructor(props) {
@@ -14,7 +13,8 @@ class Register extends React.Component {
                 name: false,
                 email: false,
                 password: false
-            }
+            },
+            userExists: false
         }
     }
 
@@ -30,6 +30,15 @@ class Register extends React.Component {
         this.setState({password: event.target.value})
     }
 
+    onRegisterError = () => {
+        this.setState({userExists: true})
+        console.log('user already exits', this.state.userExists)
+    }
+
+    toggleErrorStatus = () => {
+        this.setState({userExists: false})
+    }
+
     onSubmitRegister = () => {
         fetch(`${URL}/register`, {
             method: 'post',
@@ -41,12 +50,16 @@ class Register extends React.Component {
             })
         })
             .then(response => response.json())
-            .then(user => {
-                if (user.id) {
-                    this.props.loadUser(user);
-                    this.props.onRouteChange('home');
-                }
-            })
+                .then(user => {
+                    if (user.id) {
+                        this.props.loadUser(user);
+                        this.props.onRouteChange('home');
+                    }
+                })
+            .then(response => response.json())
+                .catch(err => {
+                    this.onRegisterError();
+                })
     }
 
     handleKeyPress = (event) => {
@@ -112,6 +125,14 @@ class Register extends React.Component {
                             id="email-address" 
                             onChange={this.onEmailChange}
                         />
+                        <Popup
+                            open={this.state.userExists}
+                            position="right center"
+                            closeOnDocumentClick
+                            onClose={this.toggleErrorStatus}
+                        >
+                        <span>This user already exists. Please sign in. </span>
+                        </Popup>
                         <div className={!errors.email && this.state.email.length > 7 ? 'error' : 'hide'}>
                             Please enter a valid email address.
                         </div>

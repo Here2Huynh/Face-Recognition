@@ -44,17 +44,17 @@ class Signin extends React.Component {
             })
         })
             .then(response => response.json())
-            .then(user => {
-                if (user.id) {
-                    this.props.loadUser(user);
-                    this.props.onRouteChange('home');
-                    this.printVar()
-                }
-            })
+                .then(user => {
+                    if (user.id) {
+                        this.props.loadUser(user);
+                        this.props.onRouteChange('home');
+                        this.printVar()
+                    }
+                })
             .then(response => response.json())
-            .catch(err => {
-                this.onLoginError();
-            })
+                .catch(err => {
+                    this.onLoginError();
+                })
     }
 
     handleKeyPress = (event) => {
@@ -122,10 +122,10 @@ class Signin extends React.Component {
                             closeOnDocumentClick
                             onClose={this.toggleErrorStatus}
                         >
-                        <span> Credentials you have enter is incorrect. </span>
+                        <span> Credentials you have enter is incorrect. Please try again. </span>
                         </Popup>
                         <div className={(!errors.email && this.state.signInEmail.length > 7) ? 'error' : 'hide' }>
-                            Please enter a valid email address.
+                            Please enter a valid email address.  
                         </div>
 
                     </div>
