@@ -25,6 +25,15 @@ class Signin extends React.Component {
         this.setState({signInPassword: event.target.value})
     }
 
+    onLoginError = () => {
+        this.setState({wrongCredentials: true})
+        console.log('wrong credentials', this.state.wrongCredentials)
+    }
+
+    toggleErrorStatus = () => {
+        this.setState({wrongCredentials: false})
+    }
+
     onSubmitSignIn = () => {
         fetch(`${URL}/signin`, {
             method: 'post',
@@ -42,10 +51,9 @@ class Signin extends React.Component {
                     this.printVar()
                 }
             })
+            .then(response => response.json())
             .catch(err => {
-                console.log(err)
-                // this.setState({wrongCredentials: true})
-                // console.log('wrong credentials', this.state.wrongCredentials)
+                this.onLoginError();
             })
     }
 
@@ -68,6 +76,8 @@ class Signin extends React.Component {
             touched: { ...this.state.touched, [field] : true }
         })
     }
+
+
     
     printVar = () => {
         console.log('URL', URL);
@@ -107,9 +117,10 @@ class Signin extends React.Component {
                             onChange={this.onEmailChange}
                         />
                         <Popup
-                            open={!errors.email && this.state.signInEmail.length > 7}
+                            open={this.state.wrongCredentials}
                             position="right center"
                             closeOnDocumentClick
+                            onClose={this.toggleErrorStatus}
                         >
                         <span> Credentials you have enter is incorrect. </span>
                         </Popup>

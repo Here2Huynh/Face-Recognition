@@ -4,6 +4,8 @@ import Signin from '../Signin/Signin';
 import Register from '../Register/Register';
 import Home from '../Home/Home';
 
+
+
 //initial state to be used to clear state when user signs out 
 const initialState = {
     input : '',
