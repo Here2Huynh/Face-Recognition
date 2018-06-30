@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Particles from 'react-particles-js';
 import './App.css';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 
 import ComponentsWrapper from './ComponentsWrapper';
 
@@ -39,13 +40,14 @@ class App extends Component {
     this.setState({box: box});
   }
 
-
   render() {
     
     return (
       <div className="App">
-        <Particles className='particles' params={particlesOptions} />
-        <ComponentsWrapper />
+        <ErrorBoundary>
+          <Particles className='particles' params={particlesOptions} />
+          <ComponentsWrapper />
+        </ErrorBoundary>
       </div>
     );
   }
