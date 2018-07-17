@@ -7,9 +7,14 @@ class Register extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            name: '',
             email: '',
             password: '',
-            name: ''
+            touched: {
+                name: false,
+                email: false,
+                password: false
+            }
         }
     }
 
@@ -44,7 +49,36 @@ class Register extends React.Component {
             })
     }
 
+    handleKeyPress = (event) => {
+        if (event.key === "Enter") {
+            this.onSubmitSign()
+        }
+    }
+
+    validate = (name, email, password) => {
+        let re = /\S+@\S+/;
+        return {
+            name: name.length > 0,
+            email: re.test(email),
+            password: password.length > 0
+        }
+    }
+
+    handleBlur = (field) => (event) => {
+        this.setState({
+            touched: { ...this.state.touched, [field] : true } 
+        })
+    }
+
     render() {
+        let errors = this.validate(this.state.name, this.state.email, this.state.password);
+        let isButtonEnabled = errors.name && errors.email && errors.password;
+        const shouldMarkError = (field) => {
+            const hasError = !errors[field];
+            const shouldShow = this.state.touched[field];
+            return hasError ? shouldShow : false;
+        }
+
         return(
             <article className="br3 ba b--black-10 mv4 w-100 w-25-ns w-50-m w-100-l mw6 shadow-5 center">
             <main className="pa4 black-80">
@@ -54,7 +88,11 @@ class Register extends React.Component {
                     <div className="mt3">
                         <label className="db fw6 lh-copy f6" htmlFor="email-address">Name</label>
                         <input 
-                            className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" 
+                            className={ shouldMarkError('name')
+                                ? "pa2 input-reset ba bg-transparent hover-bg-black b--dark-red hover-white w-100" 
+                                : "pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                            }
+                            onBlur={this.handleBlur('name')}
                             type="text" 
                             name="name"  
                             id="name" 
@@ -64,7 +102,11 @@ class Register extends React.Component {
                     <div className="mt3">
                         <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
                         <input 
-                            className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" 
+                            className={ shouldMarkError('email')
+                                ? "pa2 input-reset ba bg-transparent hover-bg-black b--dark-red hover-white w-100" 
+                                : "pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                            }
+                            onBlur={this.handleBlur('email')}
                             type="email" 
                             name="email-address"  
                             id="email-address" 
@@ -74,11 +116,16 @@ class Register extends React.Component {
                     <div className="mv3">
                         <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
                         <input 
-                            className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" 
+                            className={ shouldMarkError('password')
+                                ? "b pa2 input-reset ba bg-transparent hover-bg-black b--dark-red hover-white w-100"
+                                : "b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                            } 
+                            onBlur={this.handleBlur('password')}
                             type="password" 
                             name="password"  
                             id="password" 
                             onChange={this.onPasswordChange}
+                            onKeyPress={this.handleKeyPress}
                         />
                     </div>
                     </fieldset>
@@ -87,7 +134,9 @@ class Register extends React.Component {
                         onClick={this.onSubmitSign}
                         className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" 
                         type="submit" 
-                        value="Register" />
+                        value="Register" 
+                        disabled={!isButtonEnabled}
+                    />
                     </div>
                 </div>
             </main>

@@ -1,1 +1,1 @@
-export default process.env.NODE_ENV === 'production' ? "https://still-falls-19006.herokuapp.com" : "http://localhost:3000" 
+export default process.env.NODE_ENV === '' ? "https://still-falls-19006.herokuapp.com" : "http://localhost:3000" 
