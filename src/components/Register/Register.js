@@ -1,7 +1,6 @@
 import React from 'react';
 import URL from '../../Constants';
-
-//condense register & signin in to a form component with different input types
+import Popup from "reactjs-popup";
 
 class Register extends React.Component {
     constructor(props) {
@@ -14,7 +13,8 @@ class Register extends React.Component {
                 name: false,
                 email: false,
                 password: false
-            }
+            },
+            userExists: false
         }
     }
 
@@ -30,7 +30,16 @@ class Register extends React.Component {
         this.setState({password: event.target.value})
     }
 
-    onSubmitSign = () => {
+    onRegisterError = () => {
+        this.setState({userExists: true})
+        console.log('user already exits', this.state.userExists)
+    }
+
+    toggleErrorStatus = () => {
+        this.setState({userExists: false})
+    }
+
+    onSubmitRegister = () => {
         fetch(`${URL}/register`, {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
@@ -41,17 +50,21 @@ class Register extends React.Component {
             })
         })
             .then(response => response.json())
-            .then(user => {
-                if (user.id) {
-                    this.props.loadUser(user);
-                    this.props.onRouteChange('home');
-                }
-            })
+                .then(user => {
+                    if (user.id) {
+                        this.props.loadUser(user);
+                        this.props.onRouteChange('home');
+                    }
+                })
+            .then(response => response.json())
+                .catch(err => {
+                    this.onRegisterError();
+                })
     }
 
     handleKeyPress = (event) => {
         if (event.key === "Enter") {
-            this.onSubmitSign()
+            this.onSubmitRegister()
         }
     }
 
@@ -112,6 +125,17 @@ class Register extends React.Component {
                             id="email-address" 
                             onChange={this.onEmailChange}
                         />
+                        <Popup
+                            open={this.state.userExists}
+                            position="right center"
+                            closeOnDocumentClick
+                            onClose={this.toggleErrorStatus}
+                        >
+                        <span>This user already exists. Please sign in. </span>
+                        </Popup>
+                        <div className={!errors.email && this.state.email.length > 7 ? 'error' : 'hide'}>
+                            Please enter a valid email address.
+                        </div>
                     </div>
                     <div className="mv3">
                         <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
@@ -131,7 +155,7 @@ class Register extends React.Component {
                     </fieldset>
                     <div className="">
                     <input 
-                        onClick={this.onSubmitSign}
+                        onClick={this.onSubmitRegister}
                         className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" 
                         type="submit" 
                         value="Register" 

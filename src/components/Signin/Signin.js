@@ -1,6 +1,7 @@
 import React from 'react';
 import URL from '../../Constants';
 import './Signin.css';
+import Popup from "reactjs-popup";
 
 class Signin extends React.Component {
     constructor(props){
@@ -11,14 +12,9 @@ class Signin extends React.Component {
             touched: {
                 email: false,
                 password: false
-            }
+            },
+            wrongCredentials: false
         }
-    }
-
-    handleBlur = (field) => (event) => {
-        this.setState({
-            touched: { ...this.state.touched, [field] : true }
-        })
     }
 
     onEmailChange = (event) => {
@@ -27,6 +23,15 @@ class Signin extends React.Component {
 
     onPasswordChange = (event) => {
         this.setState({signInPassword: event.target.value})
+    }
+
+    onLoginError = () => {
+        this.setState({wrongCredentials: true})
+        console.log('wrong credentials', this.state.wrongCredentials)
+    }
+
+    toggleErrorStatus = () => {
+        this.setState({wrongCredentials: false})
     }
 
     onSubmitSignIn = () => {
@@ -39,14 +44,17 @@ class Signin extends React.Component {
             })
         })
             .then(response => response.json())
-            .then(user => {
-                if (user.id) {
-                    this.props.loadUser(user);
-                    this.props.onRouteChange('home');
-                    this.printVar()
-                }
-            })
-            .catch(err => window.alert('You entered the wrong credentials. Please try again.'))
+                .then(user => {
+                    if (user.id) {
+                        this.props.loadUser(user);
+                        this.props.onRouteChange('home');
+                        this.printVar()
+                    }
+                })
+            .then(response => response.json())
+                .catch(err => {
+                    this.onLoginError();
+                })
     }
 
     handleKeyPress = (event) => {
@@ -55,10 +63,6 @@ class Signin extends React.Component {
         }
     }
 
-    // /\S+@\S+/.test('dada@gmail.com')
-    // true
-    // /\S+@\S+/.test('dadm')
-    // false
     validate = (email, password) => {
     let re = /\S+@\S+/;        
     return {
@@ -67,10 +71,19 @@ class Signin extends React.Component {
         }
     }
 
+    handleBlur = (field) => (event) => {
+        this.setState({
+            touched: { ...this.state.touched, [field] : true }
+        })
+    }
+
+
+    
     printVar = () => {
         console.log('URL', URL);
         console.log('process.env', process.env)
         console.log('process.env.NODE_ENV', process.env.NODE_ENV)
+        console.log('wrong credentials', this.state.wrongCredentials)
       }
     
 
@@ -102,11 +115,19 @@ class Signin extends React.Component {
                             name="email-address"  
                             id="email-address"
                             onChange={this.onEmailChange}
-                            // onMouseLeave={console.log(errors.email, this.state.signInEmail.length, errors.password)}
                         />
+                        <Popup
+                            open={this.state.wrongCredentials}
+                            position="right center"
+                            closeOnDocumentClick
+                            onClose={this.toggleErrorStatus}
+                        >
+                        <span> Credentials you have enter is incorrect. Please try again. </span>
+                        </Popup>
                         <div className={(!errors.email && this.state.signInEmail.length > 7) ? 'error' : 'hide' }>
-                            Please enter a valid email address.
+                            Please enter a valid email address.  
                         </div>
+
                     </div>
                     <div className="mv3">
                         <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
